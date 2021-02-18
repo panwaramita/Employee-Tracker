@@ -80,7 +80,7 @@ function employeeByManager() {
 
         for (let i = 0; i < res.length; i++) {
             // console.log(res[i].id+"  "+res[i].first_name +"         "+res[i].last_name +"         "+res[i].department);
-            values.push({ id: res[i].id, first_name: res[i].first_name, last_name: res[i].last_name, Manager:res[i].Manager_firstname + " " + res[i].Manager_lastName });
+            values.push({ id: res[i].id, first_name: res[i].first_name, last_name: res[i].last_name, Manager: res[i].Manager_firstname + " " + res[i].Manager_lastName });
         }
         console.table(values);
     });
@@ -93,7 +93,8 @@ function allEmployee() {
     const query = `select e.id as id,e.first_name,e.last_name,r.title,d.name as department,r.salary,m.first_name as Manager_firstname,m.last_name as Manager_lastName
     from employee e right join role r on e.role_id=r.id 
     inner join department d on r.department_id=d.id
-    inner join employee m on m.manager_id=e.id`;
+    left join employee m on e.manager_id=m.id
+    order by m.id asc`;
     let values = [];
     connection.query(query, function (err, res) {
         if (err) throw err;
@@ -103,31 +104,109 @@ function allEmployee() {
         {
             values.push({ id: res[i].id, first_name: res[i].first_name, last_name: res[i].last_name, title: res[i].title, department: res[i].department, salary: res[i].salary, Manager: res[i].Manager_firstname + " " + res[i].Manager_lastName });
         }
-       console.table(values);
+        console.table(values);
     });
 }
 //add employee
 function addEmployee() {
     inquirer.prompt([
         {
-            name: 'choice',
+            name: 'firstName',
             type: 'input',
-            message: `Enter the first_name of the employee?`,
-            choices: ['View all Employees', 'View all Employees By Department', 'View all Employees by Manager', 'add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
+            message: 'Enter the first name of the employee?'
+        },
+        {
+            name: 'lastName',
+            type: 'input',
+            message: `Enter the last name of the employee?`
+        },
+        {
+            name: 'role',
+            type: 'list',
+            message: `Select the role?`,
+            choices: getRole("name")
+        },
+        {
+            name: 'Manager',
+            type: 'list',
+            message: `Select the Manager?`,
+            choices: getManager("name")
         }
     ]).then(answers => {
-        console.log(answers);
-        if (answers.choice == 'View all Employees') {
-            allEmployee(answers);
-        }
-        else if (answers.choice == 'View all Employees By Department') {
-            employeeByDepartment();
-        }
-        else if (answers.choice == 'View all Employees by Manager') {
-            employeeByManager();
-        }
-        else if (answers.choice == 'add Employee') {
-            addEmployee();
-        }
+        const managerId=getManager(answers.Manager);
+        const roleId=getRole(answers.role);
+        const query="insert into employee(first_name,last_name,role_id,manager_id)values('"+answers.firstName+"','"+answers.lastName+"',"+roleId+","+managerId+")";
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            allEmployee();
+        });
+
     });
+}
+let roleValues = [];
+function getRole(value) {
+    if (value == "name") {
+      let value=[];
+        const query = `select *
+    from role`;
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            // Log all results of the SELECT statement
+
+
+            for (let i = 0; i < res.length; i++) {
+                // console.log(res[i].id+"  "+res[i].first_name +"         "+res[i].last_name +"         "+res[i].department);
+                roleValues.push(res[i]);
+                value.push(res[i].title);
+            }
+
+        });
+        return (value);
+    }
+    else {
+        let id="";
+       roleValues.forEach(element => {
+           if(element.title==value)
+           {
+            id=element.id;
+           }
+       });
+       console.log("id"+id);
+       return id;
+    }
+}
+let managerValue=[];
+function getManager(value) {
+   // console.log("asd");
+    if (value == "name") {
+        let values = [];
+        const query = `select *
+    from employee`;
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            // Log all results of the SELECT statement
+
+
+            for (let i = 0; i < res.length; i++) {
+                // console.log(res[i].id+"  "+res[i].first_name +"         "+res[i].last_name +"         "+res[i].department);
+                values.push(res[i].first_name + " " + res[i].last_name);
+                managerValue.push(res[i]);
+            }
+
+        });
+        return (values);
+    }
+    else {
+        let id="";
+        console.log(managerValue);
+        let split=value.split(" ");
+       managerValue.forEach(element => {
+           if(element.first_name==split[0] && element.last_name==split[1])
+           {
+            id=element.id;
+           }
+       });
+       console.log("id"+id);
+       return id;
+    }
 }

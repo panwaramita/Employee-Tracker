@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 const console = require('console');
+const { chownSync } = require('fs');
 var connection = mysql.createConnection({
     host: "localhost",
 
@@ -28,7 +29,7 @@ function CreateQuestions() {
             name: 'choice',
             type: 'list',
             message: `What you would like to do?`,
-            choices: ['View all Employees', 'View all Employees By Department', 'View all Employees by Manager', 'add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
+            choices: ['Add Department', 'View all Employees', 'View all Employees By Department', 'View all Employees by Manager', 'add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
         }
     ]).then(answers => {
         console.log(answers);
@@ -43,6 +44,9 @@ function CreateQuestions() {
         }
         else if (answers.choice == 'add Employee') {
             addEmployee();
+        } 
+        else if (answers.choice == 'Add Department') {
+            addDepartment();
         }
     });
 }
@@ -141,6 +145,37 @@ function addEmployee() {
             allEmployee();
         });
 
+    });
+}
+//add department
+function addDepartment() {
+    inquirer.prompt([
+        {
+            name: 'departmentName',
+            type: 'input',
+            message: 'Enter the name of the department?'
+        }
+    ]).then(answers => {
+        const queryIsExist="select name from department where name='"+answers.departmentName+"'";
+        connection.query(queryIsExist,function(err,res)
+        {
+            if(err) throw err;
+            if(res.length)
+            {
+                console.log(answers.departmentName+" department already exists..");
+                CreateQuestions();
+            }
+            else
+            {
+                const query="insert into department(name)values('"+answers.departmentName+"')";
+                connection.query(query, function (err, res) {
+                    if (err) throw err;
+                    console.log("sucessfull insertion.");
+                    allEmployee();
+                    CreateQuestions();
+                });
+            }
+        })
     });
 }
 let roleValues = [];

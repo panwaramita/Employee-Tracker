@@ -36,6 +36,7 @@ insert into department(name)values('productions');
 
 -- insert records into role table
 insert into role(title,salary,department_id)values('Sales Lead',10000.10,1);
+insert into role(title,salary,department_id)values('Production Lead',9000.10,2);
 insert into employee table
 insert into employee(first_name,last_name,role_id)values('Jhon','Doe',3);
 insert into employee(first_name,last_name,role_id,manager_id)values('Mike','Chan',3,1);

@@ -37,7 +37,7 @@ function CreateQuestions(){
         else if (answers.choice == 'View Role') {
          role.getRole("view");
         }
-        else if (answers.choice == 'Update Employee roles') {
+        else if (answers.choice == 'Update Employee Role') {
             employee.updateEmployeeRole();
         }
         else if (answers.choice == 'Remove Employee') {

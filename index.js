@@ -43,6 +43,9 @@ function CreateQuestions(){
         else if (answers.choice == 'Remove Employee') {
             employee.removeEmployee();
         }
+        else if (answers.choice == 'Update Employee Manager') {
+            employee.updateEmployeeManager();
+        }
         else if(answers.choice == "Exit"){
                 return process.exit(22);
         }

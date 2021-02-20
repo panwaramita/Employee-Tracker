@@ -60,4 +60,17 @@ from employee e inner join employee m on m.manager_id=e.id
 -- FROM   employee e1 
 --        LEFT JOIN employee e2 
 --        ON e1.manager_id = e2.id
-select * from department
+use office_db;
+select * from employee;
+select * from role;
+update e.employee
+set e.role_id=2
+where employee;
+-- select e.id as id,e.first_name,e.last_name,r.title,d.name as department,r.salary,m.first_name as Manager_firstname,m.last_name as Manager_lastName
+--     from employee e inner join role r on e.role_id=r.id 
+--     inner join department d on r.department_id=d.id
+--     left join employee m on e.manager_id=m.id
+--     order by e.id asc
+-- SET FOREIGN_KEY_CHECKS = 0;
+-- delete from employee where id=3; 0,
+  sql: 'SET FOREIGN_KEY_CHECKS = 0  delete from employee where id=7

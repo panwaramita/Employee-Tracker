@@ -60,8 +60,7 @@ function CreateQuestions(){
         }
     });
 }
-
-//CreateQuestions();
+// run function calls the create question function
 const run = async () => {
  await CreateQuestions();
 };

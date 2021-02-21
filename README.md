@@ -17,7 +17,7 @@
 
 * node js 
 * Visual Studio Code 1.51.1
-* mysql
+* mySQL
 * Express
 
 ## License
@@ -26,5 +26,5 @@
 
 ## Link
 
-* Employee Tracker Vedio:(./dist/images/Employee_tracker.webm)
+* Employee Tracker Video: (https://drive.google.com/file/d/1yHIfsrsteQo5dPoTcOLBoTaPOFZ4D5xA/view?usp=sharing)
 

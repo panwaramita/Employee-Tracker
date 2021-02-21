@@ -10,7 +10,7 @@ function CreateQuestions(){
             name: 'choice',
             type: 'list',
             message: 'What you would like to do?',
-            choices: ["Add Department","Add Role","add Employee","View Department","View Role","View all Employees","Update Employee Role","View all Employees By Department","View all Employees by Manager", "Remove Employee","Remove Department","Remove Role","Update Employee Manager","Exit"]
+            choices: ["Add Department","Add Role","add Employee","View Department","View Role","View all Employees","Update Employee Role","View all Employees By Department","View all Employees by Manager", "Remove Employee","Remove Department","Remove Role","Update Employee Manager","Total Salary based on Department","Exit"]
         }
     ]).then(answers => {
         if (answers.choice == 'View all Employees') {
@@ -51,6 +51,9 @@ function CreateQuestions(){
         }
         else if (answers.choice == 'Update Employee Manager') {
             employee.updateEmployeeManager();
+        }
+        else if (answers.choice == 'Total Salary based on Department') {
+            department.salaryBasedOnDepartment();
         }
         else if(answers.choice == "Exit"){
                 return process.exit(22);

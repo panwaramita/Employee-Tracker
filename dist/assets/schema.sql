@@ -1,5 +1,5 @@
 -- create an office database
- -- create database office_db;
+ create database office_db;
  use office_db;
 -- create an department table
 create table department(

@@ -1,3 +1,5 @@
+-- drop the database if already exist
+drop database is exists office_db;
 -- create an office database
  create database office_db;
  use office_db;

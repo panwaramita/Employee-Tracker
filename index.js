@@ -5,6 +5,7 @@ const role=require('./lib/role');
 const employee=require('./lib/employee');
 //function create the prompt to ask user questions
 function CreateQuestions(){
+    //ask the user question 
     inquirer.prompt([
         {   
             name: 'choice',
@@ -65,4 +66,5 @@ const run = async () => {
  await CreateQuestions();
 };
 run();
+//export the run function
 module.exports.CreateQuestions=run;
